@@ -17,7 +17,7 @@
 		<ApplicationId>nl.han.nots.ChatClient</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationVersion>0.1</ApplicationVersion>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
