@@ -31,10 +31,10 @@
                     <Label Grid.Row="2">Port</Label>
                     <Label Grid.Row="3">Buffer Size</Label>
 
-                    <Entry x:Name="txtNameClient" Grid.Column="1" Text="Client 1" Margin="5"/>
-                    <Entry x:Name="txtIPServer" Grid.Row="1" Grid.Column="1" Text="127.0.0.1" Margin="5"/>
-                    <Entry x:Name="txtPort" Grid.Row="2" Grid.Column="1" Text="9000" Margin="5"/>
-                    <Entry x:Name="txtBufferSize" Grid.Row="3" Grid.Column="1" Text="1024" Margin="5"/>
+                    <Entry x:Name="txtNameClient" Grid.Column="1" Placeholder="Client 1" Margin="5"/>
+                    <Entry x:Name="txtIPServer" Grid.Row="1" Grid.Column="1" Placeholder="127.0.0.1" Margin="5"/>
+                    <Entry x:Name="txtPort" Grid.Row="2" Grid.Column="1" Placeholder="9000" Margin="5"/>
+                    <Entry x:Name="txtBufferSize" Grid.Row="3" Grid.Column="1" Placeholder="1024" Margin="5"/>
 
                     <Button x:Name="btnConnect" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Text="Connect" Padding="5" Margin="10" Clicked="btnConnect_Click"/>
                 </Grid>
@@ -52,13 +52,7 @@
 
         <Frame Grid.Column="1" Padding="10" Margin="10">
         <Label Text="Chats" />
-            <ListView x:Name="listChats">
-            <ListView.ItemTemplate>
-			<DataTemplate>
-                <TextCell>No chat messages yet...</TextCell>
-                </DataTemplate>
-		</ListView.ItemTemplate>
-            </ListView>
+            <ListView x:Name="listChats" />
         </Frame>
     </Grid>
     </ScrollView>
