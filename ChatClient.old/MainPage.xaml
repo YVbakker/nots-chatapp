@@ -44,15 +44,14 @@
             <Label Text="Send Message" />
                 <StackLayout Orientation="Vertical">
                     <Label Margin="5">Message</Label>
-                    <Entry x:Name="txtMessage" Margin="5" />
+                    <Entry x:Name="txtMessage" Margin="5" TextChanged="txtMessage_TextChanged" Completed="txtMessage_Completed" />
                     <Button x:Name="btnSend" Padding="5" Margin="10" Text="Send" Clicked="btnSend_Click" />
                 </StackLayout>
             </Frame>
         </StackLayout>
 
         <Frame Grid.Column="1" Padding="10" Margin="10">
-        <Label Text="Chats" />
-            <ListView x:Name="listChats" />
+            <Editor x:Name="chatBox" />
         </Frame>
     </Grid>
     </ScrollView>
