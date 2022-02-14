@@ -3,6 +3,7 @@
 using Serilog;
 
 using var log = new LoggerConfiguration()
+    .Enrich.WithThreadId()
     .WriteTo.Console()
     .CreateLogger();
 
