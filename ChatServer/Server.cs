@@ -23,11 +23,11 @@ public class Server
         _clients = new List<Socket>();
     }
 
-    public void Start()
+    public async Task Start()
     {
         try
         {
-            StartListeningAsync().Start();
+            await Task.Run(StartListeningAsync);
             Log.Information("Server started");
         }
         catch (Exception e)
