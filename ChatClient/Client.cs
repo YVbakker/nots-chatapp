@@ -39,18 +39,20 @@ public class Client
     {
         while (true)
         {
-            Log.Information("Sending message");
-            try
-            {
-                await _socket.SendAsync(Encoding.ASCII.GetBytes("Hello world!"), SocketFlags.None);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "Could not send message");
-                throw;
-            }
-
             await Task.Delay(1000);
+            if (_socket.Connected)
+            {
+                Log.Information("Sending message");
+                try
+                {
+                    await _socket.SendAsync(Encoding.ASCII.GetBytes("Hello world!"), SocketFlags.None);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Could not send message");
+                    throw;
+                }
+            }
         }
     }
 
@@ -58,11 +60,13 @@ public class Client
     {
         while (true)
         {
+            // Log.Information("Receiving thread is alive!");
+            // await Task.Delay(1000);
             if (_socket.Connected)
             {
                 if (_socket.Available > 0)
                 {
-                    await HandleMessageAsync();
+                    await HandleMessageAsync(_socket.Available);
                 }
             }
             else
@@ -73,11 +77,11 @@ public class Client
         }
     }
 
-    public async Task HandleMessageAsync()
+    private async Task HandleMessageAsync(int nBytesReceived)
     {
-        var buffer = new ArraySegment<byte>();
+        var buffer = new byte[nBytesReceived];
+        // await Task.Factory.FromAsync(_socket.BeginReceive(buffer, 0, nBytesReceived, SocketFlags.None, null, null), _socket.EndReceive);
         await _socket.ReceiveAsync(buffer, SocketFlags.None);
-        var message = Encoding.ASCII.GetString(buffer);
-        Console.WriteLine(message);
+        Console.WriteLine(Encoding.ASCII.GetString(buffer));
     }
 }
