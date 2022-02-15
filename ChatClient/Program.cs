@@ -14,4 +14,4 @@ Log.Information("Attempting to connect client to server");
 var client = new Client("localhost", 9000, 1024);
 
 await client.Connect();
-await client.StartSending();
+await Task.WhenAll(client.StartSending(), client.StartReceiving());
