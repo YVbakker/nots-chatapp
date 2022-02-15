@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using Serilog;
 
 namespace ChatServer;
@@ -74,8 +75,8 @@ public class Server
     {
         while (true)
         {
-            await Task.Delay(1000);
-            Log.Information("Client handling thread is alive!");
+            await Task.Delay(1); // adding a delay here results in a working loop? Weird behaviour
+            // Log.Information("Client handling thread is alive!");
             foreach (var client in _clients)
             {
                 if (client.Connected)
@@ -83,7 +84,7 @@ public class Server
                     if (client.Available > 0)
                     {
                         Log.Information("{NBytes} bytes received from client, handling now", client.Available);
-                        //handle receive logic
+                        await HandleMessageAsync(client, client.Available);
                     }
                 }
                 else
@@ -106,11 +107,22 @@ public class Server
         }
     }
 
-    private async Task HandleMessageAsync(Socket client)
+    private async Task HandleMessageAsync(Socket client, int nBytesReceived)
     {
-        var buffer = new ArraySegment<byte>();
+        var buffer = new byte[nBytesReceived];
+        // await Task.Factory.FromAsync(client.BeginReceive(buffer, 0, nBytesReceived, SocketFlags.None, null, null), client.EndReceive);
         await client.ReceiveAsync(buffer, SocketFlags.None);
-        await client.SendAsync(buffer, SocketFlags.None);
-        
+        Log.Information("Received message from client: {Message}", Encoding.ASCII.GetString(buffer));
+        // await client.SendAsync(buffer, SocketFlags.None);
+        // Log.Information("Sent the message to the client");
+        await SendMessageToAllClientsAsync(buffer);
+    }
+
+    private async Task SendMessageToAllClientsAsync(byte[] buffer)
+    {
+        foreach (var client in _clients)
+        {
+            await client.SendAsync(buffer, SocketFlags.None);
+        }
     }
 }
