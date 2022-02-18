@@ -42,7 +42,7 @@ public class Client
             await Task.Delay(1000);
             if (_socket.Connected)
             {
-                Log.Information("Sending message");
+                // Log.Information("Sending message");
                 try
                 {
                     await _socket.SendAsync(Encoding.ASCII.GetBytes("Hello world!"), SocketFlags.None);
@@ -60,8 +60,6 @@ public class Client
     {
         while (true)
         {
-            // Log.Information("Receiving thread is alive!");
-            // await Task.Delay(1000);
             if (_socket.Connected)
             {
                 if (_socket.Available > 0)
@@ -72,7 +70,16 @@ public class Client
             else
             {
                 Log.Information("Socket no longer active, closing...");
-                _socket.Close();
+                try
+                {
+                    _socket.Close();
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, "Could not close socket");
+                    throw;
+                }
             }
         }
     }
